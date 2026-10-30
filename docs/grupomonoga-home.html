@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grupo Monoga | Ingeniería de Software, Paneles Administrativos & Agentes IA</title>
+  <meta name="description" content="Desarrollo de software empresarial a medida, paneles administrativos privados, agentes de ventas 24/7 con Inteligencia Artificial e infraestructura cloud segura.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Spline 3D Web Component (Official Runtime) -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.71/build/spline-viewer.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0072f5',
+              600: '#0058ca',
+              700: '#0047a5',
+              800: '#033b85',
+              900: '#06326e',
+              950: '#031c42',
+            }
+          },
+          animation: {
+            'shimmer': 'shimmer 2.5s linear infinite',
+            'marquee': 'marquee 28s linear infinite',
+          },
+          keyframes: {
+            shimmer: {
+              from: { backgroundPosition: '0 0' },
+              to: { backgroundPosition: '-200% 0' }
+            },
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-50%)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #07090e;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Lighting Orbs (Edge Gaussian Blur 140px) */
+    .ambient-glow-top {
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(0, 114, 245, 0.12) 0%, transparent 70%);
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ambient-glow-center {
+      position: absolute;
+      top: 50%;
+      left: -120px;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(5, 150, 105, 0.08) 0%, transparent 70%);
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Shimmer Badge */
+    .shimmer-badge {
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(0,114,245,0.25) 50%, rgba(255,255,255,0.05) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+    }
+
+    /* Tactile Press (Emil Kowalski) */
+    .tactile-btn {
+      transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 140ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .tactile-btn:hover {
+      transform: translateY(-2px);
+    }
+    .tactile-btn:active {
+      transform: scale(0.975) translateY(1px);
+    }
+
+    /* Glass Card Standard (21st.dev) */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.5);
+    }
+    .glass-card:hover {
+      border-color: rgba(0, 114, 245, 0.4);
+      box-shadow: 0 25px 60px -15px rgba(0, 114, 245, 0.12);
+    }
+
+    /* Dynamic Cursor Spotlight Effect */
+    .spotlight-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-glow {
+      position: absolute;
+      pointer-events: none;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(0, 114, 245, 0.22) 0%, rgba(255, 255, 255, 0.08) 35%, transparent 70%);
+      filter: blur(35px);
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+      z-index: 1;
+      will-change: left, top, opacity;
+    }
+    .spotlight-card:hover .spotlight-glow {
+      opacity: 1;
+    }
+
+    /* Hide Spline watermark logo */
+    spline-viewer::part(logo) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-slate-100 bg-[#07090e] relative selection:bg-brand-500 selection:text-white">
+
+  <!-- Ambient Light Lighting Orbs -->
+  <div class="ambient-glow-top"></div>
+  <div class="ambient-glow-center"></div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#07090e]/80 backdrop-blur-xl border-b border-white/10 transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 to-slate-900 border border-brand-400/30 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-brand-600/20 group-hover:scale-105 transition-transform">
+          <i data-lucide="cpu" class="w-5 h-5 text-brand-300"></i>
+        </div>
+        <div>
+          <span class="text-base font-black tracking-tight text-white">GRUPO MONOGA</span>
+          <span class="block text-[10px] font-mono font-bold uppercase tracking-widest text-brand-400">Enterprise AI & Software</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-bold text-slate-300">
+        <a href="#soluciones" class="hover:text-white transition-colors">Soluciones</a>
+        <a href="#arquitectura" class="hover:text-white transition-colors">Arquitectura</a>
+        <a href="#agentes" class="hover:text-white transition-colors">Agentes IA</a>
+        <a href="#casos" class="hover:text-white transition-colors">Casos de Éxito</a>
+        <a href="#contacto" class="hover:text-white transition-colors">Contacto</a>
+      </nav>
+
+      <!-- Header CTA -->
+      <div class="flex items-center gap-3">
+        <a href="https://wa.me/570000000000?text=Hola%20Grupo%20Monoga,%20quiero%20conocer%20m%C3%A1s%20sobre%20sus%20soluciones%20de%20software%20y%20agentes%20de%20IA%20para%20mi%20empresa." target="_blank" class="tactile-btn inline-flex items-center gap-2 py-2.5 px-5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-lg shadow-brand-600/30">
+          <i data-lucide="message-square" class="w-4 h-4 text-white"></i>
+          <span>Hablar con un Ingeniero</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO SECTION WITH 3D SPLINE SCENE + SPOTLIGHT (21st.dev Component) -->
+  <section class="pt-28 pb-16 px-4 sm:px-6 max-w-7xl mx-auto relative z-10">
+    
+    <!-- Main 3D Interactive Card Container with Spotlight -->
+    <div id="hero-spotlight-card" class="spotlight-card rounded-3xl border border-white/10 bg-black/85 backdrop-blur-2xl shadow-2xl relative overflow-hidden min-h-[640px] flex flex-col lg:flex-row items-stretch">
+      
+      <!-- Dynamic Mouse Spotlight Element -->
+      <div id="hero-spotlight-glow" class="spotlight-glow"></div>
+
+      <!-- Static Top Background Ambient Glow for Depth -->
+      <div class="absolute -top-32 left-1/4 w-96 h-96 bg-brand-600/15 rounded-full blur-[100px] pointer-events-none"></div>
+      <div class="absolute -bottom-32 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <!-- Left Column: High-Ticket Copy & CTA -->
+      <div class="flex-1 p-8 sm:p-14 relative z-10 flex flex-col justify-center">
+        
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-brand-500/30 shimmer-badge text-brand-300 text-xs font-mono font-bold uppercase tracking-wider mb-6 w-fit shadow-inner">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-400"></i>
+          <span>Monoga OS 2026 &bull; Enterprise 3D Intelligence</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.08] mb-6">
+          <span class="block text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-slate-400">
+            SOFTWARE PRIVADO & AGENTES IA
+          </span>
+          <span class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-400 tracking-normal block mt-2 font-mono">
+            PARA EMPRESAS DE ALTO IMPACTO
+          </span>
+        </h1>
+
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mb-8">
+          Desarrollamos paneles administrativos privados, agentes de ventas autónomos en WhatsApp 24/7 y sistemas cloud con ciberseguridad bancaria. Cero fallas, cero intermediarios.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 mb-8">
+          <a href="https://wa.me/570000000000?text=Hola%20Daniel%20y%20John,%20quiero%20agendar%20una%20reuni%C3%B3n%20para%20desarrollar%20un%20proyecto%20de%20software%20con%20Grupo%20Monoga." target="_blank" class="tactile-btn w-full sm:w-auto py-4 px-8 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-extrabold text-sm shadow-xl shadow-brand-600/30 flex items-center justify-center gap-2.5">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+            <span>Agendar Consultoría por WhatsApp</span>
+          </a>
+
+          <a href="#soluciones" class="tactile-btn w-full sm:w-auto py-4 px-6 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white font-bold text-sm border border-white/10 flex items-center justify-center gap-2">
+            <span>Explorar Soluciones</span>
+            <i data-lucide="arrow-down" class="w-4 h-4 text-slate-400"></i>
+          </a>
+        </div>
+
+        <!-- Metric Badges -->
+        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 text-left">
+          <div>
+            <div class="text-xl sm:text-2xl font-black text-white font-mono">0%</div>
+            <div class="text-[11px] text-slate-400 uppercase font-semibold mt-0.5">Errores de Stock</div>
+          </div>
+          <div>
+            <div class="text-xl sm:text-2xl font-black text-emerald-400 font-mono">24/7</div>
+            <div class="text-[11px] text-slate-400 uppercase font-semibold mt-0.5">Ventas WhatsApp</div>
+          </div>
+          <div>
+            <div class="text-xl sm:text-2xl font-black text-brand-400 font-mono">256-bit</div>
+            <div class="text-[11px] text-slate-400 uppercase font-semibold mt-0.5">Seguridad Cloud</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Interactive 3D Spline Scene -->
+      <div class="flex-1 relative min-h-[420px] lg:min-h-[580px] flex items-center justify-center overflow-hidden">
+        
+        <!-- Interactive Spline 3D Scene -->
+        <spline-viewer 
+          url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" 
+          class="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"
+          loading-anim-type="spinner-small-dark">
+        </spline-viewer>
+
+        <!-- 3D Hint Badge Overlay -->
+        <div class="absolute bottom-6 right-6 bg-slate-950/80 backdrop-blur-md rounded-xl py-2 px-3.5 border border-white/10 flex items-center gap-2 text-[11px] text-slate-300 font-mono pointer-events-none shadow-lg">
+          <i data-lucide="orbit" class="w-3.5 h-3.5 text-brand-400 animate-spin" style="animation-duration: 8s;"></i>
+          <span>Modelo 3D Interactivo &bull; Arrastra para girar</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MARQUEE OF TECH STACK & ENTERPRISE STANDARDS -->
+  <section class="border-y border-white/10 bg-black/40 py-6 overflow-hidden relative z-20">
+    <div class="max-w-7xl mx-auto px-6 mb-3 flex items-center justify-between">
+      <span class="text-[11px] font-bold tracking-widest text-slate-400 uppercase flex items-center gap-2 font-mono">
+        <i data-lucide="shield-check" class="w-4 h-4 text-brand-400"></i>
+        ESTÁNDAR TECNOLÓGICO EMPRESARIAL
+      </span>
+      <span class="text-xs text-slate-400 hidden sm:inline">Arquitectura Cloud &bull; Cifrado SSL 256-bit &bull; Docker & Fast Microservices</span>
+    </div>
+
+    <div class="flex gap-8 whitespace-nowrap overflow-hidden">
+      <div class="flex gap-8 items-center text-slate-300 font-bold text-xs tracking-wider animate-marquee font-mono">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="bot" class="w-4 h-4 text-brand-400"></i>
+          <span>OPENCLAW AGENT FRAMEWORK</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
+          <span>WHATSAPP CLOUD API 24/7</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="database" class="w-4 h-4 text-blue-400"></i>
+          <span>POSTGRESQL & SQLITE ENGINES</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="credit-card" class="w-4 h-4 text-purple-400"></i>
+          <span>WOMPI BANCOLOMBIA PASARELAS</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i>
+          <span>ISOLATED ZERO-TRUST DB</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="cpu" class="w-4 h-4 text-amber-400"></i>
+          <span>NODE.JS 24 & TYPESCRIPT</span>
+        </div>
+        <!-- Loop duplicate -->
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="bot" class="w-4 h-4 text-brand-400"></i>
+          <span>OPENCLAW AGENT FRAMEWORK</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 shadow-xs">
+          <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
+          <span>WHATSAPP CLOUD API 24/7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENTO GRID ARCHITECTURE (The 4 Pillars of Grupo Monoga) -->
+  <section id="soluciones" class="max-w-7xl mx-auto px-6 py-20 relative z-20">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-mono font-bold uppercase tracking-wider mb-3">
+        <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+        <span>Nuestras Capacidades de Ingeniería</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Software Propietario Sin Límites</h2>
+      <p class="text-slate-400 text-sm sm:text-base mt-4 leading-relaxed">
+        No construimos simples páginas web. Desarrollamos ecosistemas digitales privados que automatizan ventas, eliminan errores humanos y multiplican el valor de tu compañía.
+      </p>
+    </div>
+
+    <!-- Bento Grid Container -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+      
+      <!-- Card 1: AI WhatsApp Sales Agents (Span 7) -->
+      <div class="md:col-span-7 glass-card rounded-3xl p-8 sm:p-10 flex flex-col justify-between group transition-all duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+            <i data-lucide="message-circle" class="w-7 h-7"></i>
+          </div>
+          <span class="inline-block px-3 py-1 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 uppercase tracking-wide mb-3">
+            Agentes Autónomos 24/7
+          </span>
+          <h3 class="text-2xl sm:text-3xl font-black text-white mb-3">
+            Vendedores Inteligentes en WhatsApp & Canales Digitales
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+            Agentes de Inteligencia Artificial entrenados con la base técnica, catálogo y políticas exactas de tu negocio. Responden al segundo, cotizan con inventario real y transfieren al asesor humano con el resumen completo listo para facturar.
+          </p>
+          <div class="grid grid-cols-2 gap-4 text-xs font-bold text-slate-300">
+            <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i>
+              <span>Cero tiempo de espera</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
+              <i data-lucide="check-check" class="w-4 h-4 text-emerald-400"></i>
+              <span>Cierre y traspaso calificado</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-bold text-emerald-400">
+          <span>Integración directa con WhatsApp Cloud API</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </div>
+
+      <!-- Card 2: Central Administrative Backoffices (Span 5) -->
+      <div class="md:col-span-5 glass-card rounded-3xl p-8 sm:p-10 flex flex-col justify-between group transition-all duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+            <i data-lucide="layout-dashboard" class="w-7 h-7"></i>
+          </div>
+          <span class="inline-block px-3 py-1 rounded text-xs font-mono font-bold bg-brand-500/20 text-brand-300 uppercase tracking-wide mb-3">
+            Control Centralizado
+          </span>
+          <h3 class="text-2xl font-black text-white mb-3">
+            Paneles Administrativos & Gestión de Stock
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+            Plataformas privadas diseñadas exclusivamente para tu equipo. Administra precios por escala de volumen, actualiza existencias en vivo y gestiona clientes sin depender de desarrolladores externos.
+          </p>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-bold text-brand-400">
+          <span>Arquitectura Next.js & React</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </div>
+
+      <!-- Card 3: Anti-Hacking & Security Infrastructure (Span 5) -->
+      <div class="md:col-span-5 glass-card rounded-3xl p-8 sm:p-10 flex flex-col justify-between group transition-all duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+            <i data-lucide="shield-check" class="w-7 h-7"></i>
+          </div>
+          <span class="inline-block px-3 py-1 rounded text-xs font-mono font-bold bg-purple-500/20 text-purple-300 uppercase tracking-wide mb-3">
+            Ciberseguridad Bancaria
+          </span>
+          <h3 class="text-2xl font-black text-white mb-3">
+            Bases de Datos Aisladas & Blindaje Anti-Hackeo
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+            Tus datos de ventas, clientes y finanzas jamás quedan expuestos. Servidores en contenedores protegidos con firewalls cloud, tokens cifrados y backups automáticos continuos.
+          </p>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-bold text-purple-400">
+          <span>Zero-Trust Security</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </div>
+
+      <!-- Card 4: Automated Payment Gateways (Span 7) -->
+      <div class="md:col-span-7 glass-card rounded-3xl p-8 sm:p-10 flex flex-col justify-between group transition-all duration-300">
+        <div>
+          <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+            <i data-lucide="credit-card" class="w-7 h-7"></i>
+          </div>
+          <span class="inline-block px-3 py-1 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300 uppercase tracking-wide mb-3">
+            Monetización & Recaudo
+          </span>
+          <h3 class="text-2xl sm:text-3xl font-black text-white mb-3">
+            Pasarelas de Pago Integradas (Wompi, PSE & Tarjetas)
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
+            Cotizaciones y páginas de venta con checkout directo conectado a Wompi Bancolombia, PSE, Nequi y tarjetas de crédito. Firma criptográfica de integridad SHA-256 y liquidación automática a tu cuenta de ahorros empresarial.
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs font-semibold text-slate-300">
+            <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">Bancolombia</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">Nequi</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">PSE</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">Visa / Mastercard / AMEX</span>
+          </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-bold text-amber-400">
+          <span>Webhooks en tiempo real con confirmación bancaria</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TRACK RECORD / CASE STUDIES SECTION -->
+  <section id="casos" class="bg-black/60 border-y border-white/10 py-24 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-brand-400 mb-2 block">Casos de Éxito & Implementaciones</span>
+          <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Construido para Quienes no Aceptan Fallas</h2>
+        </div>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-md leading-relaxed">
+          Conoce algunas de las soluciones desarrolladas bajo los estándares de ingeniería de Grupo Monoga.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Case 1: RFI Telecomunicaciones -->
+        <div class="p-8 rounded-3xl bg-slate-900/60 border border-white/10 flex flex-col justify-between hover:border-brand-500/50 transition-colors">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[11px] font-mono font-bold text-brand-400 uppercase">Sector Radiocomunicación</span>
+              <i data-lucide="radio-tower" class="w-5 h-5 text-slate-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">RFI Telecomunicaciones</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+              Implementación de panel administrativo para importación de radios Icom, Hytera y Motorola, sincronización de stock determinista y cotizador web interactivo con Wompi.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-white/10 text-xs text-emerald-400 font-semibold flex items-center gap-1.5 font-mono">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>0% errores en inventario &bull; Pagos activos</span>
+          </div>
+        </div>
+
+        <!-- Case 2: Monoga OS & Jarvis Assistant -->
+        <div class="p-8 rounded-3xl bg-slate-900/60 border border-white/10 flex flex-col justify-between hover:border-brand-500/50 transition-colors">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[11px] font-mono font-bold text-purple-400 uppercase">Inteligencia Operativa</span>
+              <i data-lucide="cpu" class="w-5 h-5 text-slate-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Monoga OS & Jarvis Engine</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+              Sistema de copiloto autónomo para gestión de agendas, reconciliación financiera, seguimiento de tareas de alto rendimiento y asistentes ejecutivos en Telegram.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-white/10 text-xs text-purple-400 font-semibold flex items-center gap-1.5 font-mono">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Automatización operativa diaria continua</span>
+          </div>
+        </div>
+
+        <!-- Case 3: Medical & Dental Clinics -->
+        <div class="p-8 rounded-3xl bg-slate-900/60 border border-white/10 flex flex-col justify-between hover:border-brand-500/50 transition-colors">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[11px] font-mono font-bold text-emerald-400 uppercase">Sector Salud Especializada</span>
+              <i data-lucide="stethoscope" class="w-5 h-5 text-slate-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Clínicas & Sector Salud</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+              Agentes conversacionales para agendamiento de citas médicas, triage inicial de pacientes y recordatorios automáticos reduciendo el ausentismo en un 40%.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-white/10 text-xs text-emerald-400 font-semibold flex items-center gap-1.5 font-mono">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Agendamiento automatizado 24 horas</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HIGH-TICKET CTA SECTION (Direct Contact) -->
+  <section id="contacto" class="max-w-5xl mx-auto px-6 py-20">
+    <div class="rounded-3xl bg-gradient-to-b from-slate-900 to-black border border-brand-500/30 text-white p-8 sm:p-14 shadow-2xl relative overflow-hidden text-center">
+      
+      <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+        
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/20 text-brand-300 text-xs font-mono font-bold uppercase tracking-wider">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-400"></i>
+          <span>Consultoría Técnica Personalizada</span>
+        </div>
+
+        <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          ¿Listo para Construir la Infraestructura Digital de tu Negocio?
+        </h2>
+
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          Agenda una sesión técnica directamente con Daniel & John Monoga. Evaluaremos tus procesos y te presentaremos una propuesta con cotización exacta y arquitectura modular.
+        </p>
+
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="https://wa.me/570000000000?text=Hola%20Daniel%20y%20John,%20quiero%20agendar%20una%20reuni%C3%B3n%20para%20desarrollar%20un%20proyecto%20de%20software%20con%20Grupo%20Monoga." target="_blank" class="tactile-btn w-full sm:w-auto py-4 px-8 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-extrabold text-sm shadow-xl shadow-brand-600/30 flex items-center justify-center gap-2.5">
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+            <span>Agendar Consultoría por WhatsApp</span>
+          </a>
+
+          <a href="tel:+570000000000" class="tactile-btn w-full sm:w-auto py-4 px-6 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm border border-white/10 flex items-center justify-center gap-2">
+            <i data-lucide="phone" class="w-4 h-4 text-slate-400"></i>
+            <span>Llamar Directamente</span>
+          </a>
+        </div>
+
+        <div class="pt-4 flex items-center justify-center gap-6 text-[11px] text-slate-400 font-mono">
+          <span class="flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            Respuesta en menos de 15 min
+          </span>
+          <span class="flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            Facturación Legal Colombiana
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/10 bg-black/80 py-12 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-white font-black text-xs">
+          <i data-lucide="cpu" class="w-4 h-4 text-brand-400"></i>
+        </div>
+        <div>
+          <div class="font-bold text-white">GRUPO MONOGA S.A.S.</div>
+          <div class="text-[11px] text-slate-500 font-mono">Ingeniería de Software &bull; Monoga OS 2026</div>
+        </div>
+      </div>
+
+      <div class="flex gap-6 font-semibold text-slate-400">
+        <a href="#soluciones" class="hover:text-white transition-colors">Soluciones</a>
+        <a href="#arquitectura" class="hover:text-white transition-colors">Arquitectura</a>
+        <a href="#casos" class="hover:text-white transition-colors">Casos</a>
+        <a href="https://grupomonoga.com/RFI-cotizacion" class="hover:text-white transition-colors">Portal RFI</a>
+      </div>
+
+      <div class="text-center md:text-right">
+        <p>&copy; 2026 Grupo Monoga. Todos los derechos reservados.</p>
+        <p class="text-[11px] text-slate-500 mt-0.5">Bucaramanga & Bogotá, Colombia</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // SPOTLIGHT MOUSE-TRACKING EFFECT (21st.dev / ibelick standard)
+    const spotlightCard = document.getElementById('hero-spotlight-card');
+    const spotlightGlow = document.getElementById('hero-spotlight-glow');
+
+    if (spotlightCard && spotlightGlow) {
+      spotlightCard.addEventListener('mousemove', (e) => {
+        const rect = spotlightCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        spotlightGlow.style.left = `${x}px`;
+        spotlightGlow.style.top = `${y}px`;
+      });
+    }
+  </script>
+</body>
+</html>

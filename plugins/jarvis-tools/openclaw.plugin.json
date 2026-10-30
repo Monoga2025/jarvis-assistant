@@ -1,0 +1,222 @@
+{
+  "id": "jarvis-tools",
+  "name": "Jarvis deterministic tools",
+  "description": "Narrow tools for a single-operator personal operating system.",
+  "version": "0.1.0",
+  "configSchema": {
+    "type": "object",
+    "required": [
+      "primaryCalendarId",
+      "managedCalendarId",
+      "importDirectory",
+      "databasePath",
+      "googleClientIdFile",
+      "googleClientSecretFile",
+      "googleRefreshTokenFile"
+    ],
+    "properties": {
+      "primaryCalendarId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "managedCalendarId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "importDirectory": {
+        "type": "string",
+        "minLength": 1
+      },
+      "databasePath": {
+        "type": "string",
+        "minLength": 1
+      },
+      "googleClientIdFile": {
+        "type": "string",
+        "minLength": 1
+      },
+      "googleClientSecretFile": {
+        "type": "string",
+        "minLength": 1
+      },
+      "googleRefreshTokenFile": {
+        "type": "string",
+        "minLength": 1
+      },
+      "googleDriveClientIdFile": {
+        "type": "string",
+        "minLength": 1
+      },
+      "googleDriveClientSecretFile": {
+        "type": "string",
+        "minLength": 1
+      },
+      "googleDriveRefreshTokenFile": {
+        "type": "string",
+        "minLength": 1
+      },
+      "googleDriveFolderId": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "additionalProperties": false
+  },
+  "activation": {
+    "onStartup": true
+  },
+  "contracts": {
+    "tools": [
+      "assistant_mode_get",
+      "assistant_mode_set",
+      "calendar_read_busy_range",
+      "calendar_read_agenda_range",
+      "calendar_create_flexible_block",
+      "calendar_reschedule_managed_block",
+      "finance_import_statement",
+      "finance_reconcile_month",
+      "couple_record_shared_expense",
+      "couple_record_settlement",
+      "couple_summary",
+      "coaching_record_checkin",
+      "coaching_summary",
+      "coaching_claim_proactive",
+      "sales_create_prospect",
+      "sales_prepare_outreach",
+      "sales_record_outcome",
+      "sales_metrics_30_days",
+      "routine_plan_day",
+      "routine_close_day",
+      "routine_plan_week",
+      "routine_guide_today",
+      "academic_import_ics",
+      "task_create",
+      "task_list",
+      "task_complete",
+      "reminder_create",
+      "reminder_list",
+      "academic_fact_record",
+      "academic_fact_list",
+      "study_handoff_create",
+      "study_handoff_list",
+      "study_report_ingest",
+      "study_material_record",
+      "study_material_list",
+      "drive_materials_sync",
+      "drive_materials_list"
+    ]
+  },
+  "toolMetadata": {
+    "assistant_mode_get": {
+      "optional": true
+    },
+    "assistant_mode_set": {
+      "optional": true
+    },
+    "calendar_read_busy_range": {
+      "optional": true
+    },
+    "calendar_read_agenda_range": {
+      "optional": true
+    },
+    "calendar_create_flexible_block": {
+      "optional": true
+    },
+    "calendar_reschedule_managed_block": {
+      "optional": true
+    },
+    "finance_import_statement": {
+      "optional": true
+    },
+    "finance_reconcile_month": {
+      "optional": true
+    },
+    "couple_record_shared_expense": {
+      "optional": true
+    },
+    "couple_record_settlement": {
+      "optional": true
+    },
+    "couple_summary": {
+      "optional": true
+    },
+    "coaching_record_checkin": {
+      "optional": true
+    },
+    "coaching_summary": {
+      "optional": true
+    },
+    "coaching_claim_proactive": {
+      "optional": true
+    },
+    "sales_create_prospect": {
+      "optional": true
+    },
+    "sales_prepare_outreach": {
+      "optional": true
+    },
+    "sales_record_outcome": {
+      "optional": true
+    },
+    "sales_metrics_30_days": {
+      "optional": true
+    },
+    "routine_plan_day": {
+      "optional": true
+    },
+    "routine_close_day": {
+      "optional": true
+    },
+    "routine_plan_week": {
+      "optional": true
+    },
+    "routine_guide_today": {
+      "optional": true
+    },
+    "academic_import_ics": {
+      "optional": true
+    },
+    "task_create": {
+      "optional": true
+    },
+    "task_list": {
+      "optional": true
+    },
+    "task_complete": {
+      "optional": true
+    },
+    "reminder_create": {
+      "optional": true
+    },
+    "reminder_list": {
+      "optional": true
+    },
+    "academic_fact_record": {
+      "optional": true
+    },
+    "academic_fact_list": {
+      "optional": true
+    },
+    "study_handoff_create": {
+      "optional": true
+    },
+    "study_handoff_list": {
+      "optional": true
+    },
+    "study_report_ingest": {
+      "optional": true
+    },
+    "study_material_record": {
+      "optional": true
+    },
+    "study_material_list": {
+      "optional": true
+    },
+    "drive_materials_sync": {
+      "optional": true
+    },
+    "drive_materials_list": {
+      "optional": true
+    }
+  }
+}

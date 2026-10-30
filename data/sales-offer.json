@@ -1,0 +1,8 @@
+{
+  "_note": "Sample pricing values (cents, COP). Replace with your own offer.",
+  "niche": "Small businesses handling WhatsApp inquiries manually",
+  "founder": { "implementationCents": 10000000, "monthlyCents": 2000000, "customerLimit": 2 },
+  "standard": { "implementationCents": 20000000, "monthlyCents": 3000000 },
+  "freeDevelopmentAllowed": false,
+  "thirtyDayGoal": { "paidCustomers": 1, "contractedCents": 10000000 }
+}

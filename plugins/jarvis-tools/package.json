@@ -1,0 +1,33 @@
+{
+  "name": "@jarvis-v1/openclaw-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist",
+    "openclaw.plugin.json"
+  ],
+  "dependencies": {
+    "pdfjs-dist": "5.4.149",
+    "typebox": "1.3.17"
+  },
+  "peerDependencies": {
+    "openclaw": "2026.9.1"
+  },
+  "openclaw": {
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "runtimeExtensions": [
+      "./dist/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.9.1",
+      "minGatewayVersion": "2026.9.1"
+    },
+    "build": {
+      "openclawVersion": "2026.9.1",
+      "pluginSdkVersion": "2026.9.1"
+    }
+  }
+}

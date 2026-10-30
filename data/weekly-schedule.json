@@ -1,0 +1,10 @@
+{
+  "timezone": "America/Bogota",
+  "_note": "Sample data. Replace with your own schedule.",
+  "academicTerm": { "start": "2026-08-03", "end": "2026-11-20", "category": "sample" },
+  "classHoursPerWeek": 4,
+  "classes": [
+    { "day": "monday", "start": "08:00", "end": "10:00", "title": "Sample Course A" },
+    { "day": "wednesday", "start": "08:00", "end": "10:00", "title": "Sample Course A" }
+  ]
+}

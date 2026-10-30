@@ -1,0 +1,6 @@
+{
+  "_note": "Sample weekly targets. Replace with your own.",
+  "weekly": { "sleepHours": 56, "studyHoursTarget": 14, "studyHoursFloor": 12, "salesHours": 8, "gymSessions": 2, "mealPrepSessions": 2 },
+  "focus": { "gamingDuringDeepWorkMinutes": 0, "postCloseGamingMinutesMax": 45 },
+  "sales": { "researched": 10, "drafts": 10, "followUps": 5, "conversations": 2, "diagnoses": 1 }
+}

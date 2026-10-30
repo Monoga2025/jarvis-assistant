@@ -1,0 +1,18 @@
+{
+  "pilotDays": 14,
+  "checks": [
+    "telegram_operates_with_pc_off",
+    "unauthorized_telegram_user_blocked",
+    "admin_surface_not_public",
+    "protected_calendar_events_unchanged",
+    "transactions_categorized_at_least_90_percent",
+    "statement_totals_reconciled",
+    "study_at_least_12_hours_weekly",
+    "two_meal_prep_sessions",
+    "two_gym_sessions",
+    "zero_gaming_during_deep_work",
+    "ten_prospects_contacted",
+    "two_sales_conversations",
+    "monthly_cost_below_usd_25"
+  ]
+}

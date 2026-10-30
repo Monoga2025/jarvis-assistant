@@ -1,0 +1,7 @@
+{
+  "_note": "Sample budget values. Categories are generic.",
+  "currency": "COP",
+  "categories": ["income","rent","fuel","food_out","groceries","subscriptions","savings","transfer_candidate","internal_transfer","unidentified"],
+  "nonEssentialPurchaseReviewCents": 1000000,
+  "monthlyPersonalSavingsTargetCents": 2000000
+}
