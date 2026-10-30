@@ -221,7 +221,7 @@ describe("Google Tasks insertion from the canonical outbox", () => {
       const task = f.legacy.createTask(input); let calls = 0;
       const client = new GoogleTasksClient("list-a", token, async (_url, options) => { calls++; return json(remote(JSON.parse(String(options?.body)))); });
       await new GoogleTasksDispatcher(f.service, client, { enabled: true }).dispatchOne();
-      const other = new TaskService(f.db, "silvia");
+      const other = new TaskService(f.db, "sam");
       assert.throws(() => other.getGoogleTaskProjection(task.id), /owner/i);
       f.legacy.createTask({ ...input, legacyId: "message-2" });
       const changed = new GoogleTasksClient("list-b", token, async () => { calls++; throw new Error("must not send"); });
@@ -241,7 +241,7 @@ describe("Google Tasks insertion from the canonical outbox", () => {
         proof: { kind: "insert_ack", matches: 1, pages: 0 }, remote: remote(request) }), /evidence/i);
       assert.throws(() => f.service.settleGoogleTaskInsert(prepared, { outcome: "synced", requestHash: "different",
         proof: { kind: "complete_scan", matches: 1, pages: 1 }, remote: remote(request) }), /payload/i);
-      const other = new TaskService(f.db, "silvia");
+      const other = new TaskService(f.db, "sam");
       assert.throws(() => other.claimGoogleTaskInsert("dedicated-list"), /list/i);
       assert.equal(f.service.listSyncIntents()[0]?.state, "unknown");
       assert.equal(f.service.getGoogleTaskProjection(task.id)?.remoteId, null);

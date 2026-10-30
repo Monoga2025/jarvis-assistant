@@ -1,7 +1,7 @@
 # Implementation Plan: Jarvis Google Drive Metadata Integration
 
 ## Outcome and scope
-Deliver a one-way, metadata-only Google Drive slice for the allowlisted `Materiales` folder. Jarvis will read validated metadata and optional web links, persist an idempotent local SQLite index, and expose narrow sync/list tools. Slice 1 does not download files, ingest content, write to Drive, modify Calendar, TEMA, Supabase, or Obsidian, and must not touch `C:\Users\Monoga\Desktop\Monoga OS\04_UNAB_INGENIERIA\UNAB_OS_Plataforma`.
+Deliver a one-way, metadata-only Google Drive slice for the allowlisted `Materiales` folder. Jarvis will read validated metadata and optional web links, persist an idempotent local SQLite index, and expose narrow sync/list tools. Slice 1 does not download files, ingest content, write to Drive, modify Calendar, TEMA, Supabase, or Obsidian, and must not touch `C:\path\to\vault\04_UNAB_INGENIERIA\UNAB_OS_Plataforma`.
 
 ## Confirmed baseline
 - Remote Google is authenticated for this chat, but it is not Jarvis runtime authentication.

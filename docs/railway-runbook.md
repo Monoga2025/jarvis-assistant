@@ -116,7 +116,7 @@ The two calendar IDs must be distinct. The primary calendar is read through Free
 After Calendar is configured, install the personal ICS as a temporary Railway variable without printing it:
 
 ```powershell
-$source = [IO.File]::ReadAllBytes('C:\Users\Monoga\Downloads\horarios-2026-2.ics')
+$source = [IO.File]::ReadAllBytes('C:\path\to\horarios-2026-2.ics')
 $buffer = New-Object IO.MemoryStream
 $gzip = New-Object IO.Compression.GZipStream($buffer, [IO.Compression.CompressionMode]::Compress, $true)
 $gzip.Write($source, 0, $source.Length)

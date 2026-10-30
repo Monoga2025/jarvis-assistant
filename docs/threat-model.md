@@ -19,7 +19,7 @@ One VPS and one numeric Telegram operator form one trust boundary. OpenClaw plug
 | Primary event detail disclosure or modification | `calendar.events.readonly`, configured-calendar allowlist, response field minimization, metadata-only logs, and no primary write path |
 | Financial path escape | Canonical local root, extension checks, traversal and symlink rejection |
 | Duplicate spending from transfers | Cross-account equal-value/two-day deduplication with explicit reporting |
-| Partner data imported without consent | Silvia starts pending; statement import checks scoped consent before file access; no model tool grants consent |
+| Partner data imported without consent | Sam starts pending; statement import checks scoped consent before file access; no model tool grants consent |
 | Couple ledger imbalance or replay | Integer COP, exact allocation sums, atomic idempotency hashes and append-only audit events |
 | Manipulative motivation | Evidence-backed check-ins only; no points, shame, punishment or financial rewards; gaming capped at 45 minutes after a verified close |
 | Secret disclosure | Environment file mode 0600; no secret logging; static audit; encrypted backups |
