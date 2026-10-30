@@ -27,9 +27,19 @@ A single-operator personal operating system built as a tool-only plugin for the 
 - ESLint, TypeBox schemas, pdfjs-dist for document reading.
 - Railway deployment (Dockerfile, long-polling worker, persistent volume).
 
+## Channels
+
+| Channel | Status | Where |
+|---|---|---|
+| Telegram (OpenClaw, long polling) | **Primary**, supported and tested | `plugins/jarvis-tools/`, `config/` |
+| WhatsApp (Evolution API + OpenRouter) | **Experimental**, not wired into the runtime | `plugins/whatsapp-channel/` |
+
+The WhatsApp modules come from an earlier standalone WhatsApp bot that was folded into this repository; this branch consolidates the private prototype and the legacy WhatsApp bot without importing their git history. Only the reusable, personal-data-free pieces were ported; see `plugins/whatsapp-channel/README.md`. Run its offline tests with `npm run test:whatsapp`.
+
 ## Structure
 
 - `plugins/jarvis-tools/`: the OpenClaw plugin (tool implementations, reminder worker, Google clients).
+- `plugins/whatsapp-channel/`: experimental WhatsApp channel modules (offline-tested, not wired in).
 - `config/`: version-pinned production config templates.
 - `data/`: sample schedule, metrics, budget taxonomy, offer and pilot scorecard (all values here are samples).
 - `deploy/`: Railway entrypoint, backup gate and optional VPS scripts.

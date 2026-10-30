@@ -14,6 +14,7 @@
     "test:finance": "node --import tsx --test test/finance.test.ts",
     "test:sales": "node --import tsx --test test/sales.test.ts",
     "test:routine": "node --import tsx --test test/routine.test.ts",
+    "test:whatsapp": "node --test plugins/whatsapp-channel/test/*.test.js",
     "test:ics": "node --import tsx --test test/ics.test.ts",
     "calendar:oauth": "node --import tsx scripts/google-calendar-oauth.ts",
     "lint": "eslint .",
