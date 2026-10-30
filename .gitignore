@@ -15,3 +15,11 @@ build/
 *.key
 .codegraph/
 .engram/
+*.p12
+imports/
+backups/
+migration-backups/
+previous-deployment-id.txt
+coverage/
+.DS_Store
+.atl/
